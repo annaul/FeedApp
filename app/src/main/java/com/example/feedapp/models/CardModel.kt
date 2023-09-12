@@ -9,28 +9,28 @@ sealed class CardModel(
 )
 
 class Text(
-    val value: String?,
-    val textColor: String?,
-    val fontSize: Int?
+    val value: String = "",
+    val textColor: String = "",
+    val fontSize: Int = 24
 ): CardModel(Type.TEXT)
 
 class TitleDecription(
-    val titleValue: String?,
-    val titleTextColor: String?,
-    val titleTextFontSize: Int?,
-    val descriptionValue: String?,
-    val descriptionTextColor: String?,
-    val descriptionFontSize: Int?
+    val titleValue: String = "",
+    val titleTextColor: String = "",
+    val titleTextFontSize: Int = 24,
+    val descriptionValue: String ="",
+    val descriptionTextColor: String = "",
+    val descriptionFontSize: Int = 24
 ) : CardModel(Type.TITLE_DESCRIPTION)
 
 class ImageTitleDescription(
-    val ImageUrl: String?,
-    val ImageWidth: Int?,
-    val ImageHeight: Int?,
-    val titleValue: String?,
-    val titleTextColor: String?,
-    val titleTextFontSize: Int?,
-    val descriptionValue: String?,
-    val descriptionTextColor: String?,
-    val descriptionFontSize: Int?
+    val ImageUrl: String = "",
+    val ImageWidth: Int = 100,
+    val ImageHeight: Int = 100,
+    val titleValue: String = "",
+    val titleTextColor: String = "",
+    val titleTextFontSize: Int = 24,
+    val descriptionValue: String = "",
+    val descriptionTextColor: String = "",
+    val descriptionFontSize: Int = 24
 ): CardModel(Type.IMAGE_TITLE_DESCRIPTION)
