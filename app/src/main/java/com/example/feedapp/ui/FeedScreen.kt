@@ -22,6 +22,8 @@ import com.example.feedapp.models.*
 fun FeedScreen(parsedCards: MutableList<CardModel>) {
     LazyColumn(contentPadding = PaddingValues(20.dp)) {
         for (i in 0 until parsedCards.size) {
+            // Definitely wouldn't use all this unsafe casting in production code.
+            // If I did better with the models creation this wouldn't be needed.
             when (parsedCards[i].cardType) {
                 Type.TEXT -> {
                     item {

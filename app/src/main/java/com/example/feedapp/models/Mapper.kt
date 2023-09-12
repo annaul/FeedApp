@@ -8,6 +8,8 @@ fun mapCardsToComposeProps (cards: JSONArray): MutableList<CardModel> {
     for (i in 0 until cards.length()) {
         val cardType = cards.getJSONObject(i).get("card_type")
         val card = cards.getJSONObject(i).getJSONObject("card")
+        // When would probably be better here
+        // This would be much more minimal if I used retrofit or something similar
         if (cardType == "text") {
             val element = Text(
                 value = card.get("value") as String,

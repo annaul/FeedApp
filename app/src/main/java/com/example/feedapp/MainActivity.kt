@@ -16,6 +16,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            // Would normally use a retrofit library for this, which would also help me with parsing the json
             val jsonString = application.assets
                 .open("Repository.json")
                 .bufferedReader()

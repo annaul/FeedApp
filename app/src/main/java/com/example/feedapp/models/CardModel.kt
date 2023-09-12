@@ -1,5 +1,6 @@
 package com.example.feedapp.models
 
+// These need to be inheriting common properties and live in separate files
 enum class Type {
     TEXT, TITLE_DESCRIPTION, IMAGE_TITLE_DESCRIPTION
 }
