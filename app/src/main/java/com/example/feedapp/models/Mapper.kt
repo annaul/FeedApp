@@ -1,5 +1,7 @@
 package com.example.feedapp.models
 
-class Mapper {
+import org.json.JSONArray
+
+class Mapper (cards: JSONArray) {
 
 }
