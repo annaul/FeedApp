@@ -34,3 +34,5 @@ class ImageTitleDescription(
     val descriptionTextColor: String = "",
     val descriptionFontSize: Int = 24
 ): CardModel(Type.IMAGE_TITLE_DESCRIPTION)
+
+
