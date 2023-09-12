@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,7 +31,8 @@ fun FeedScreen(parsedCards: MutableList<CardModel>) {
                             color = Color((parsedCards[i] as Text).textColor.toColorInt()),
                             fontSize = (parsedCards[i] as Text).fontSize.sp,
                             textAlign = TextAlign.Center,
-                            fontStyle = MaterialTheme.typography.h1.fontStyle
+                            fontStyle = MaterialTheme.typography.h1.fontStyle,
+                            fontWeight = FontWeight.ExtraBold
                         )
                     }
                 }
@@ -41,14 +43,16 @@ fun FeedScreen(parsedCards: MutableList<CardModel>) {
                             text = (parsedCards[i] as TitleDecription).titleValue,
                             color = Color((parsedCards[i] as TitleDecription).titleTextColor.toColorInt()),
                             fontSize = (parsedCards[i] as TitleDecription).titleTextFontSize.sp,
-                            fontStyle = MaterialTheme.typography.h3.fontStyle
+                            fontStyle = MaterialTheme.typography.h3.fontStyle,
+                            fontWeight = FontWeight.Medium
                         )
                         Text(
                             modifier = Modifier.padding(vertical = 10.dp),
                             text = (parsedCards[i] as TitleDecription).descriptionValue,
                             color = Color((parsedCards[i] as TitleDecription).descriptionTextColor.toColorInt()),
                             fontSize = (parsedCards[i] as TitleDecription).descriptionFontSize.sp,
-                            fontStyle = MaterialTheme.typography.body1.fontStyle
+                            fontStyle = MaterialTheme.typography.body1.fontStyle,
+                            fontWeight = FontWeight.Medium
                         )
                     }
                 }
@@ -66,19 +70,21 @@ fun FeedScreen(parsedCards: MutableList<CardModel>) {
                                 contentDescription = null,
                                 contentScale = ContentScale.Fit,
                                 modifier = Modifier
-                                    .aspectRatio(width/height)
+                                    .aspectRatio(width / height)
                             )
                             Column(modifier = Modifier.padding(15.dp)) {
                                 Text(
                                     text = (parsedCards[i] as ImageTitleDescription).titleValue,
                                     color = Color((parsedCards[i] as ImageTitleDescription).titleTextColor.toColorInt()),
                                     fontSize = (parsedCards[i] as ImageTitleDescription).titleTextFontSize.sp,
+                                    fontWeight = FontWeight.Bold
                                 )
                                 Text(
                                     text = (parsedCards[i] as ImageTitleDescription).descriptionValue,
                                     color = Color((parsedCards[i] as ImageTitleDescription).descriptionTextColor.toColorInt()),
                                     fontSize = (parsedCards[i] as ImageTitleDescription).descriptionFontSize.sp,
-                                    fontStyle = MaterialTheme.typography.body1.fontStyle
+                                    fontStyle = MaterialTheme.typography.body1.fontStyle,
+                                    fontWeight = FontWeight.Medium
                                 )
                             }
                         }
