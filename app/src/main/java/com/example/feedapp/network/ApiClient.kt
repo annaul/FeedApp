@@ -27,5 +27,5 @@ object ApiClient {
 
  interface ApiService {
      @GET("home")
-     fun fetchPage(@Query("home") page: String): Call<PageResponseClass>
+     fun fetchPage(@Query("home") page: String): Call<PageResponse>
  }

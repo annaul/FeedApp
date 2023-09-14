@@ -3,7 +3,7 @@ package com.example.feedapp.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.feedapp.network.PageResponseClass
+import com.example.feedapp.network.PageResponse
 import com.example.feedapp.repository.Repository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -20,18 +20,20 @@ open class PageViewModel : ViewModel() {
 
     fun fetchPage() {
         viewModelScope.launch {
-            repository.getPage().enqueue(object : retrofit2.Callback<PageResponseClass> {
+            repository.getPage().enqueue(object : retrofit2.Callback<PageResponse> {
                 override fun onResponse(
-                    call: Call<PageResponseClass>,
-                    response: retrofit2.Response<PageResponseClass>
+                    call: Call<PageResponse>,
+                    response: retrofit2.Response<PageResponse>
                 ) {
                     if (response.isSuccessful) {
+                        // I am used to doing the update through a reducer, this is awkward because
+                        // I was trying to not use a reducer this time.
                         state.value =
                             response.body()?.page?.let { PageState.Content(it) } ?: PageState.None
                     }
                 }
 
-                override fun onFailure(call: Call<PageResponseClass>, t: Throwable) {
+                override fun onFailure(call: Call<PageResponse>, t: Throwable) {
                     Log.e("error", "$t")
                 }
             })

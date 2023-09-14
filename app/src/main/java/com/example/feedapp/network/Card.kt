@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class PageResponseClass(
+data class PageResponse(
     @Json(name = "page")
     val page: Page
 )
