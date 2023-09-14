@@ -1,11 +1,14 @@
 package com.example.feedapp.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,77 +20,92 @@ import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 import coil.compose.rememberAsyncImagePainter
 import com.example.feedapp.models.*
+import com.example.feedapp.viewmodel.PageState
+import com.example.feedapp.viewmodel.PageViewModel
 
 @Composable
-fun FeedScreen(parsedCards: MutableList<CardModel>) {
-    LazyColumn(contentPadding = PaddingValues(20.dp)) {
-        for (i in 0 until parsedCards.size) {
-            // Definitely wouldn't use all this unsafe casting in production code.
-            // If I did better with the models creation this wouldn't be needed.
-            when (parsedCards[i].cardType) {
-                Type.TEXT -> {
-                    item {
-                        Text(
-                            modifier = Modifier.padding(vertical = 10.dp),
-                            text = (parsedCards[i] as Text).value,
-                            color = Color((parsedCards[i] as Text).textColor.toColorInt()),
-                            fontSize = (parsedCards[i] as Text).fontSize.sp,
-                            textAlign = TextAlign.Center,
-                            fontStyle = MaterialTheme.typography.h1.fontStyle,
-                            fontWeight = FontWeight.ExtraBold
-                        )
-                    }
-                }
-                Type.TITLE_DESCRIPTION -> {
-                    item {
-                        Text(
-                            modifier = Modifier.padding(vertical = 10.dp),
-                            text = (parsedCards[i] as TitleDecription).titleValue,
-                            color = Color((parsedCards[i] as TitleDecription).titleTextColor.toColorInt()),
-                            fontSize = (parsedCards[i] as TitleDecription).titleTextFontSize.sp,
-                            fontStyle = MaterialTheme.typography.h3.fontStyle,
-                            fontWeight = FontWeight.Medium
-                        )
-                        Text(
-                            modifier = Modifier.padding(vertical = 10.dp),
-                            text = (parsedCards[i] as TitleDecription).descriptionValue,
-                            color = Color((parsedCards[i] as TitleDecription).descriptionTextColor.toColorInt()),
-                            fontSize = (parsedCards[i] as TitleDecription).descriptionFontSize.sp,
-                            fontStyle = MaterialTheme.typography.body1.fontStyle,
-                            fontWeight = FontWeight.Medium
-                        )
-                    }
-                }
-                Type.IMAGE_TITLE_DESCRIPTION -> {
-                    item {
-                        Box(
-                            contentAlignment = Alignment.BottomStart
-                        ) {
-                            val width = (parsedCards[i] as ImageTitleDescription).ImageWidth.dp
-                            val height = (parsedCards[i] as ImageTitleDescription).ImageHeight.dp
-                            Image(
-                                painter = rememberAsyncImagePainter(
-                                    (parsedCards[i] as ImageTitleDescription).ImageUrl
-                                ),
-                                contentDescription = null,
-                                contentScale = ContentScale.Fit,
-                                modifier = Modifier
-                                    .aspectRatio(width / height)
-                            )
-                            Column(modifier = Modifier.padding(15.dp)) {
+fun FeedScreen(viewModel: PageViewModel) {
+    val state: PageState by viewModel.state.collectAsState(initial = PageState.None)
+
+    when (state) {
+        is PageState.None -> {
+            Text("Loading")
+        }
+        is PageState.Content -> {
+            val parsedCards = responseMapper(state as PageState.Content)
+            Log.d("ANNA", parsedCards.toString())
+            LazyColumn(contentPadding = PaddingValues(20.dp)) {
+                for (i in 0 until parsedCards.size) {
+                    // Definitely wouldn't use all this unsafe casting in production code.
+                    // If I did better with the models creation this wouldn't be needed.
+                    when (parsedCards[i]) {
+                        is Text -> {
+                            item {
                                 Text(
-                                    text = (parsedCards[i] as ImageTitleDescription).titleValue,
-                                    color = Color((parsedCards[i] as ImageTitleDescription).titleTextColor.toColorInt()),
-                                    fontSize = (parsedCards[i] as ImageTitleDescription).titleTextFontSize.sp,
-                                    fontWeight = FontWeight.Bold
+                                    modifier = Modifier.padding(vertical = 10.dp),
+                                    text = (parsedCards[i] as Text).value,
+                                    color = Color((parsedCards[i] as Text).textColor.toColorInt()),
+                                    fontSize = (parsedCards[i] as Text).fontSize.sp,
+                                    textAlign = TextAlign.Center,
+                                    fontStyle = MaterialTheme.typography.h1.fontStyle,
+                                    fontWeight = FontWeight.ExtraBold
+                                )
+                            }
+                        }
+                        is TitleDecription -> {
+                            item {
+                                Text(
+                                    modifier = Modifier.padding(vertical = 10.dp),
+                                    text = (parsedCards[i] as TitleDecription).titleValue,
+                                    color = Color((parsedCards[i] as TitleDecription).titleTextColor.toColorInt()),
+                                    fontSize = (parsedCards[i] as TitleDecription).titleTextFontSize.sp,
+                                    fontStyle = MaterialTheme.typography.h3.fontStyle,
+                                    fontWeight = FontWeight.Medium
                                 )
                                 Text(
-                                    text = (parsedCards[i] as ImageTitleDescription).descriptionValue,
-                                    color = Color((parsedCards[i] as ImageTitleDescription).descriptionTextColor.toColorInt()),
-                                    fontSize = (parsedCards[i] as ImageTitleDescription).descriptionFontSize.sp,
+                                    modifier = Modifier.padding(vertical = 10.dp),
+                                    text = (parsedCards[i] as TitleDecription).descriptionValue,
+                                    color = Color((parsedCards[i] as TitleDecription).descriptionTextColor.toColorInt()),
+                                    fontSize = (parsedCards[i] as TitleDecription).descriptionFontSize.sp,
                                     fontStyle = MaterialTheme.typography.body1.fontStyle,
                                     fontWeight = FontWeight.Medium
                                 )
+                            }
+                        }
+                        is ImageTitleDescription-> {
+                            item {
+                                Box(
+                                    contentAlignment = Alignment.BottomStart
+                                ) {
+                                    val width =
+                                        (parsedCards[i] as ImageTitleDescription).ImageWidth.dp
+                                    val height =
+                                        (parsedCards[i] as ImageTitleDescription).ImageHeight.dp
+                                    Image(
+                                        painter = rememberAsyncImagePainter(
+                                            (parsedCards[i] as ImageTitleDescription).ImageUrl
+                                        ),
+                                        contentDescription = null,
+                                        contentScale = ContentScale.Fit,
+                                        modifier = Modifier
+                                            .aspectRatio(width / height)
+                                    )
+                                    Column(modifier = Modifier.padding(15.dp)) {
+                                        Text(
+                                            text = (parsedCards[i] as ImageTitleDescription).titleValue,
+                                            color = Color((parsedCards[i] as ImageTitleDescription).titleTextColor.toColorInt()),
+                                            fontSize = (parsedCards[i] as ImageTitleDescription).titleTextFontSize.sp,
+                                            fontWeight = FontWeight.Bold
+                                        )
+                                        Text(
+                                            text = (parsedCards[i] as ImageTitleDescription).descriptionValue,
+                                            color = Color((parsedCards[i] as ImageTitleDescription).descriptionTextColor.toColorInt()),
+                                            fontSize = (parsedCards[i] as ImageTitleDescription).descriptionFontSize.sp,
+                                            fontStyle = MaterialTheme.typography.body1.fontStyle,
+                                            fontWeight = FontWeight.Medium
+                                        )
+                                    }
+                                }
                             }
                         }
                     }

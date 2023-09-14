@@ -1,19 +1,10 @@
 package com.example.feedapp.models
 
-// These need to be inheriting common properties and live in separate files
-enum class Type {
-    TEXT, TITLE_DESCRIPTION, IMAGE_TITLE_DESCRIPTION
-}
-
-sealed class CardModel(
-    val cardType: Type
-)
-
 class Text(
     val value: String = "",
     val textColor: String = "",
     val fontSize: Int = 24
-): CardModel(Type.TEXT)
+)
 
 class TitleDecription(
     val titleValue: String = "",
@@ -22,7 +13,7 @@ class TitleDecription(
     val descriptionValue: String ="",
     val descriptionTextColor: String = "",
     val descriptionFontSize: Int = 24
-) : CardModel(Type.TITLE_DESCRIPTION)
+)
 
 class ImageTitleDescription(
     val ImageUrl: String = "",
@@ -34,6 +25,6 @@ class ImageTitleDescription(
     val descriptionValue: String = "",
     val descriptionTextColor: String = "",
     val descriptionFontSize: Int = 24
-): CardModel(Type.IMAGE_TITLE_DESCRIPTION)
+)
 
 
