@@ -33,7 +33,6 @@ fun FeedScreen(viewModel: PageViewModel) {
         }
         is PageState.Content -> {
             val parsedCards = responseMapper(state as PageState.Content)
-            Log.d("ANNA", parsedCards.toString())
             LazyColumn(contentPadding = PaddingValues(20.dp)) {
                 for (i in 0 until parsedCards.size) {
                     // Definitely wouldn't use all this unsafe casting in production code.
